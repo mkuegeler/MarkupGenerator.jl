@@ -1,4 +1,9 @@
 # MarkupGenerator.jl
+
+| Status | Coverage |
+| :----: | :----: |
+| [![Build Status](https://travis-ci.org/mkuegeler/MarkupGenerator.jl.svg?branch=master)](https://travis-ci.org/mkuegeler/MarkupGenerator.jl) | [![codecov.io](http://codecov.io/github/mkuegeler/MarkupGenerator.jl/coverage.svg?branch=master)](http://codecov.io/github/mkuegeler/MarkupGenerator.jl?branch=master) |
+
 *A simple markup language generator*
 
 This package provides a method to generate elements of a markup language. A markup language uses tags and attributes to define elements within a document.
