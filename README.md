@@ -10,7 +10,7 @@ MarkupGenerator.jl is written in the [Julia programming language](https://julial
 
 The package is language-agnostic, meaning that elements and attributes of any markup language can be generated as long as they base on named elements and assigned attributes.
 
-For instance, to create an **"svg"** element, all you need to do is typing:
+For instance, to create a **"svg"** element, all you need to do is typing:
 
 ```julia
 el = element("svg")
@@ -29,7 +29,7 @@ println(el)
 <svg id="root"/>
 ```
 
-Furthermore, you can add children elements. I doing so, it's easy to create a nested structure of elements.
+Furthermore, you can add children elements. In doing so, it's easy to create a nested structure of elements.
 
 ```julia
 
@@ -50,12 +50,12 @@ Here is the output:
 ## Using element libraries
 
 The core of the package serves as an abstraction layer for language-specific representations like HTML,XML or SVG. Element libraries and their attributes with sample values in JSON format facilitate the generation of element compositions.
-Basically, these libraries are invocable as JSON files or on a more generic level via API calls which requires a definition of a dedicated API respectively.
+Basically, these libraries are invocable as JSON files or on a more generic level via API calls requiring a definition of a dedicated API respectively.
 
-The following example shows the **svg** element of SVG application and its attributes.
+The following example shows the **svg** element of an SVG application and its attributes.
 [SVG](https://www.w3.org/TR/SVG11/intro.html) stands for Scalable Vector Graphics and is an application of XML to create highly detailed, resolution-independent, two-dimensional images in a truly portable format.
 
-The package comes with a JSON file which contains common SVG elements. By following the scheme of the file, any other markup language can be invoked in a similar manner.
+The JSON file **"SVG.json"** contains common SVG elements. By following the scheme of the file, any other markup language can be invoked in a similar manner.
 
 Load the JSON file:
 ```julia
