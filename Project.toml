@@ -1,0 +1,7 @@
+name = "MarkupGenerator"
+uuid = "75bad79c-854f-4b1f-b6ae-a16d2b3b2de2"
+authors = ["mkuegeler <mkuegeler@mac.com>"]
+version = "0.1.0"
+
+[deps]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
