@@ -1,4 +1,6 @@
-using MarkupGenerator, Test
+using MarkupGenerator, Test, JSON
+
+include("utils.jl")
 
 # 1. Create element without name, attributes and children
 @testset "element with no name, attributes and children" begin
@@ -74,5 +76,36 @@ end
     attributes = 1
     children = Dict()
     @test_throws MethodError element(el,attributes,children)
+
+end
+
+# 6. Read attributes from JSON file
+@testset "Read attributes values from JSON file" begin
+    SVG ="svg.json"
+    a = Dict("href" => "#")
+
+    @test get_json(SVG)["a"] == a
+    println(get_json(SVG)["a"])
+
+    SVG ="xyz.json"
+    @test_throws MethodError get_json(SVG)["a"]
+
+
+end
+
+# 7. Read attributes from JSON file and use it as values for an element
+@testset "Read attributes values from JSON file" begin
+    SVG ="svg.json"
+    el = "defs"
+    attributes = get_json(SVG)[el]
+    result = "<defs/>"
+
+    @test element(el,attributes) == result
+    println(element(el,attributes))
+
+    attributes = false
+
+    @test_throws MethodError element(el,attributes)
+
 
 end

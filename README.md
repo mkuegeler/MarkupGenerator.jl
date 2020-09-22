@@ -11,7 +11,7 @@ The two most popular markup languages are HTML and XML.
 
 The intent is to make it easier to create complex documents with parameters, like diagrams, animations and other visualizations.
 
-MarkupGenerator.jl is written in the [Julia programming language](https://julialang.org).
+"MarkupGenerator.jl" is written in the [Julia programming language](https://julialang.org).
 
 The package is language-agnostic, meaning that elements and attributes of any markup language can be generated as long as they base on named elements and assigned attributes.
 
