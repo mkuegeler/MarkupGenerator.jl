@@ -60,7 +60,7 @@ Basically, these libraries are invocable as JSON files or on a more generic leve
 The following example shows the **svg** element of an SVG application and its attributes.
 [SVG](https://www.w3.org/TR/SVG11/intro.html) stands for Scalable Vector Graphics and is an application of XML to create highly detailed, resolution-independent, two-dimensional images in a truly portable format.
 
-The JSON file **"SVG.json"** contains common SVG elements. By following the scheme of the file, any other markup language can be invoked in a similar manner.
+The JSON file **"svg.json"** in directory "test" contains common SVG elements. By following the scheme of the file, any other markup language can be invoked in a similar manner.
 
 Load the JSON file from the test directory:
 ```julia
