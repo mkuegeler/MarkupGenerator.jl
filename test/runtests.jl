@@ -1,6 +1,6 @@
-using MarkupGenerator, Test, JSON
+using MarkupGenerator, Test
 
-include("utils.jl")
+const ASSETS_DIR = joinpath(dirname(@__FILE__), "..", "assets")
 
 # 1. Create element without name, attributes and children
 @testset "element with no name, attributes and children" begin
@@ -9,6 +9,7 @@ include("utils.jl")
     # Test expected output
     @test element() == string("<",el,"/>")
     println(element())
+
 
     # Test with integer value (only strings accepted)
     el = 1
@@ -81,7 +82,7 @@ end
 
 # 6. Read attributes from JSON file
 @testset "Read attributes values from JSON file" begin
-    SVG ="svg.json"
+    SVG = string(PKG_ROOT_DIR,"/assets/","svg.json")
     a = Dict("href" => "#")
 
     @test get_json(SVG)["a"] == a
@@ -95,7 +96,7 @@ end
 
 # 7. Read attributes from JSON file and use it as values for an element
 @testset "Read attributes values from JSON file" begin
-    SVG ="svg.json"
+    SVG = string(PKG_ROOT_DIR,"/assets/","svg.json")
     el = "defs"
     attributes = get_json(SVG)[el]
     result = "<defs/>"
@@ -106,6 +107,20 @@ end
     attributes = false
 
     @test_throws MethodError element(el,attributes)
+
+
+end
+
+# 8. Test generated svg elements
+@testset "Test svg-specific elements" begin
+
+    at = Dict("id" => "my rect")
+
+    println(svg_rect())
+    println(svg_rect(at))
+    println(svg_rect(Dict(),"content"))
+    println(svg_rect(at,"content"))
+
 
 
 end
