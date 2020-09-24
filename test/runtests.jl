@@ -82,7 +82,7 @@ end
 
 # 6. Read attributes from JSON file
 @testset "Read attributes values from JSON file" begin
-    SVG = string(PKG_ROOT_DIR,"/assets/","svg.json")
+    SVG = string(PKG_ROOT_DIR,"/assets/svg/","svg.json")
     a = Dict("href" => "#")
 
     @test get_json(SVG)["a"] == a
@@ -96,7 +96,7 @@ end
 
 # 7. Read attributes from JSON file and use it as values for an element
 @testset "Read attributes values from JSON file" begin
-    SVG = string(PKG_ROOT_DIR,"/assets/","svg.json")
+    SVG = string(PKG_ROOT_DIR,"/assets/svg/","svg.json")
     el = "defs"
     attributes = get_json(SVG)[el]
     result = "<defs/>"
@@ -121,6 +121,15 @@ end
     println(svg_rect(Dict(),"content"))
     println(svg_rect(at,"content"))
 
+
+
+end
+
+# 9. Test svg document function
+@testset "Test svg document function" begin
+
+   style = Cpnt(Dict(),svg_css(CSS))
+   println(svg_document(Cpnt(),style,Cpnt(),Cpnt()))
 
 
 end

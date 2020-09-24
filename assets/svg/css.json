@@ -1,0 +1,16 @@
+{
+  "rect": {
+    "fill": "#ffcccc",
+    "stroke-width": "1",
+    "stroke": "#000000"
+  },
+  "circle": {
+    "fill": "none",
+    "stroke-width": "1",
+    "stroke": "#ff0000"
+  },
+  "line": {
+    "stroke-width": "1",
+    "stroke": "#000000"
+  }
+}

@@ -30,6 +30,7 @@ println(el)
 ```
 
 **"svg"** is the element name and **"id"** is just one attribute with value **"root"**.
+
 ```xml
 <svg id="root"/>
 ```
@@ -37,7 +38,6 @@ println(el)
 Furthermore, you can add children elements. In doing so, it's easy to create a nested structure of elements.
 
 ```julia
-
 rect_attributes = Dict("id"=>"my rectangle")
 rect = element("rect",rect_attributes)
 
@@ -63,6 +63,7 @@ The following example shows the **svg** element of an SVG application and its at
 The JSON file **"svg.json"** in directory "test" contains common SVG elements. By following the scheme of the file, any other markup language can be invoked in a similar manner.
 
 Load the JSON file from the test directory:
+
 ```julia
 SVG ="svg.json"
 svg_attributes = get_json(SVG)["svg"]
@@ -87,6 +88,7 @@ Let's take a look at the svg element within the file:
 ```
 
 You can use the predefined values of the element for your custom document. "get_json" transforms the JSON element into a Julia dictionary.
+
 ```julia
 SVG ="svg.json"
 svg_attributes = get_json(SVG)["svg"]
@@ -95,6 +97,7 @@ println(el)
 ```
 
 What you get is a SVG document with attributes and values from the JSON file.
+
 ```xml
 <svg viewBox="0 0 1282 721" height="100%" style="background-color:#cccccc;" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="100%"/>
 ```

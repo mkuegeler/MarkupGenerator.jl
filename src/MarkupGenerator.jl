@@ -1,6 +1,6 @@
 module MarkupGenerator
 
-import JSON
+import JSON, Random
 export PKG_ROOT_DIR
 
 const PKG_ROOT_DIR = normpath(joinpath(@__DIR__, ".."))
