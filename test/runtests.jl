@@ -82,23 +82,23 @@ end
 
 # 6. Read attributes from JSON file
 @testset "Read attributes values from JSON file" begin
-    SVG = string(PKG_ROOT_DIR,"/assets/svg/","svg.json")
+    svg_json = get_json(string(PKG_ROOT_DIR,"/assets/svg/","svg.json"))
     a = Dict("href" => "#")
 
-    @test get_json(SVG)["a"] == a
-    println(get_json(SVG)["a"])
+    @test svg_json["a"] == a
+    println(svg_json["a"])
 
-    SVG ="xyz.json"
-    @test_throws MethodError get_json(SVG)["a"]
+    svg_json = get_json(string(PKG_ROOT_DIR,"/assets/svg/","xyz.json"))
+    @test_throws MethodError get_json(svg_json)["a"]
 
 
 end
 
 # 7. Read attributes from JSON file and use it as values for an element
 @testset "Read attributes values from JSON file" begin
-    SVG = string(PKG_ROOT_DIR,"/assets/svg/","svg.json")
+    svg_json = get_json(string(PKG_ROOT_DIR,"/assets/svg/","svg.json"))
     el = "defs"
-    attributes = get_json(SVG)[el]
+    attributes = svg_json[el]
     result = "<defs/>"
 
     @test element(el,attributes) == result
@@ -128,8 +128,10 @@ end
 # 9. Test svg document function
 @testset "Test svg document function" begin
 
-   style = Cpnt(Dict(),svg_css(CSS))
-   println(svg_document(Cpnt(),style,Cpnt(),Cpnt()))
+    mydoc = SvgContent()
+    mydoc.style = svg_style(Dict("id"=>"mystyles"),svg_css(CSS))
+    mydoc.main = svg_g(Dict("id"=>"main"),svg_rect())
 
+    println(svg_document(Dict("id"=>"root"),mydoc))
 
 end

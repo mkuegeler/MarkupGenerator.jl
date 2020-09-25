@@ -35,13 +35,13 @@ end
  function generate(lib::Dict,pref::String=string())
    for (e,v) in lib
        # Prefix is optional, so if no prefix is given, just use the element name
-       name = !isempty(pref) ? string(pref,"_",e) : e
+       name = !isempty(pref) ? string(pref,e) : e
        fn = Symbol(name)
        default = !isempty(v) ? v : Dict()
        eval(
          quote
               $fn = function (attributes::Dict=$default,children::String=string())
-                     attributes = !isempty(attributes) ? attributes : $default
+                     attributes = check_attributes(attributes,$default)
                      return !isempty(children) ? element($e,attributes,children) : element($e,attributes)
                    end
               export $fn
