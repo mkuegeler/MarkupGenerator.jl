@@ -128,10 +128,21 @@ end
 # 9. Test svg document function
 @testset "Test svg document function" begin
 
-    mydoc = SvgContent()
+    mydoc = svgContent()
     mydoc.style = svg_style(Dict("id"=>"mystyles"),svg_css(CSS))
     mydoc.main = svg_g(Dict("id"=>"main"),svg_rect())
 
     println(svg_document(Dict("id"=>"root"),mydoc))
+
+end
+
+# 10. Test RadialGradient element
+@testset "Test RadialGradient element" begin
+
+    myrad = radialGradientContent()
+    myrad.stop1 = svg_stop(Dict("stop-color"=>"#ffffff"))
+
+    println(radialGradient_template(Dict(),myrad))
+
 
 end

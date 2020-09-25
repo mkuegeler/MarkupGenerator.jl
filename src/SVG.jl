@@ -1,4 +1,5 @@
-export SVG, CSS, svg_css, svg_document, SvgContent
+export SVG, CSS, svg_css, svg_document, svgContent, radialGradientContent, radialGradient_template
+
 
 # Get default elements and attributes
 const SVG = get_json(string(PKG_ROOT_DIR,"/assets/svg/","svg.json"))
@@ -37,17 +38,17 @@ function wrap(n)
 end
 
 # Composite type: Minimal structure of a svg document
-mutable struct SvgContent
+mutable struct svgContent
     style
     defs
     main
-    function SvgContent(style=wrap(string(PREF,"style")),defs=wrap(string(PREF,"defs")),main=wrap(string(PREF,"g")))
+    function svgContent(style=wrap(string(PREF,"style")),defs=wrap(string(PREF,"defs")),main=wrap(string(PREF,"g")))
         new(style,defs,main)
     end
 end
 
 # Creates the actual svg document
-function svg_document(a::Dict=SVG["svg"],c::SvgContent=SvgContent())
+function svg_document(a::Dict=SVG["svg"],c::svgContent=svgContent())
     return svg_svg(a,string(c.style,c.defs,c.main))
 
 end
@@ -66,4 +67,17 @@ function svg_css(children::Dict)
         c = string(c,svg_class(k,v))
     end
     return string("<![CDATA[ ",c," ]]>")
+end
+
+# Composite type: RadialGradient
+mutable struct radialGradientContent
+    stop1
+    stop2
+    function radialGradientContent(stop1=wrap(string(PREF,"stop")),stop2=wrap(string(PREF,"stop")))
+        new(stop1,stop2)
+    end
+end
+
+function radialGradient_template(a::Dict=SVG["radialGradient"],c::radialGradientContent=radialGradientContent())
+    return svg_radialGradient(a,string(c.stop1,c.stop2))
 end
