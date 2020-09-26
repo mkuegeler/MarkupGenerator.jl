@@ -1,4 +1,4 @@
-using MarkupGenerator, Test
+using MarkupGenerator, Test, Random
 
 const ASSETS_DIR = joinpath(dirname(@__FILE__), "..", "assets")
 
@@ -128,21 +128,68 @@ end
 # 9. Test svg document function
 @testset "Test svg document function" begin
 
-    mydoc = svgContent()
-    mydoc.style = svg_style(Dict("id"=>"mystyles"),svg_css(CSS))
-    mydoc.main = svg_g(Dict("id"=>"main"),svg_rect())
+    mydoc = SvgContent()
+    # mydoc.style = svg_style(Dict("id"=>"mystyles"),svg_css(CSS))
+    # mydoc.main = svg_g(Dict("id"=>"main"),svg_rect())
 
-    println(svg_document(Dict("id"=>"root"),mydoc))
+    # println(svg_document(Dict("id"=>"root"),mydoc))
 
 end
 
-# 10. Test RadialGradient element
-@testset "Test RadialGradient element" begin
+# 10. Test gradient element
+@testset "Test gradient element" begin
 
-    myrad = radialGradientContent()
+    myrad = GradientContent()
     myrad.stop1 = svg_stop(Dict("stop-color"=>"#ffffff"))
 
-    println(radialGradient_template(Dict(),myrad))
+    # println(radialGradient_template(Dict("id"=>"myrad"),myrad))
+    # println(linearGradient_template(Dict("id"=>"myrad"),myrad))
+
+end
+
+# 11. Test viewBox attribute
+@testset "Test viewBox attribute" begin
+
+    a = [0.0,0.0,100.34,200.55]
+    r = string("0.0 0.0 100.34 200.55")
+
+    @test join_str(a) == r
+    # println(join_str(a))
+
+end
+
+# 12. Test id assignments for styles
+@testset "Test create complete sample svg document" begin
+
+
+    my_rad_id = set_random_id()
+    myrad = GradientContent()
+    myrad.stop1 = svg_stop(Dict("stop-color"=>"#ffcc00", "offset"=>"10%"))
+    myrad.stop2 = svg_stop(Dict("stop-color"=>"#0000ff", "offset"=>"100%"))
+    rad = radialGradient_template(Dict("id"=>my_rad_id),myrad)
+
+
+    my_rect_style_id = set_random_id()
+
+    my_rect_style = CSS["rect"]
+    my_rect_style["fill"] = set_href(my_rad_id)
+    my_rect_style_el = svg_class("rect",my_rect_style,my_rect_style_id)
+    println(my_rect_style_el)
+
+    my_rect_attributes = SVG["rect"]
+    # # Delete style attribute because we use class instead
+    delete!(my_rect_attributes, "style")
+    my_rect_attributes["class"] = my_rect_style_id
+    my_rect = svg_rect(my_rect_attributes)
+
+    mydoc = SvgContent()
+
+    mydoc.style = svg_style(Dict(),svg_css([my_rect_style_el]))
+
+    mydoc.defs = svg_defs(Dict("id"=>"defs"),rad)
+    mydoc.main = svg_g(Dict("id"=>"main"), my_rect)
+
+    println(svg_document(Dict("id"=>"root"),mydoc))
 
 
 end

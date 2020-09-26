@@ -4,7 +4,7 @@
 ================================================================================
 """
 
-export read_file, get_json, PKG_ROOT_DIR, check_attributes, generate
+export read_file, get_json, PKG_ROOT_DIR, check_attributes, generate, join_str, set_random_id
 
 # read string from file
 function read_file(name::String)
@@ -48,4 +48,15 @@ end
          end
        )
    end
+ end
+
+ # Helper function to join an array of strings into one string, i.e. viewBox attribute
+ function join_str(args)
+   chop(join(map(v -> string("$v "), args)),head = 0, tail = 1)
+ end
+
+ # Set random id values for elements.
+ # Alphanumeric characters only because href values with numbers as the first character do not work in svg documents
+ function set_random_id(l::Int64=8)
+   Random.randstring('a':'z', l)
  end
