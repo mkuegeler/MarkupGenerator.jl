@@ -87,3 +87,27 @@ end
 function linearGradient_template(a::Dict=SVG["linearGradient"],c::GradientContent=GradientContent())
     return wrap(string(PREF,"linearGradient"),a,string(c.stop1,c.stop2))
 end
+
+# Recipes
+function svg_recipe_template()
+
+    #  Common parameters
+    x = 0
+    y = 0
+    width = 800
+    height = 600
+
+    # Id's
+    radialGradient_id = set_random_id()
+    rect_style_id = set_random_id()
+
+    # Default attribute values
+    stop = SVG["stop"]
+    radialGradient = SVG["radialGradient"]
+    rect = SVG["rect"]
+    svg = SVG["svg"]
+
+    # CSS
+    rect_style = CSS["rect"]
+
+end

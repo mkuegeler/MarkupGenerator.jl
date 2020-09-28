@@ -161,6 +161,11 @@ end
 # 12. Test id assignments for styles
 @testset "Test create complete sample svg document" begin
 
+    #  Common parameters
+    x = 0
+    y = 0
+    width = 800
+    height = 600
 
     my_rad_id = set_random_id()
     myrad = GradientContent()
@@ -179,8 +184,15 @@ end
     my_rect_attributes = SVG["rect"]
     # # Delete style attribute because we use class instead
     delete!(my_rect_attributes, "style")
+
     my_rect_attributes["class"] = my_rect_style_id
+    my_rect_attributes["x"] = string(x)
+    my_rect_attributes["y"] = string(y)
+    my_rect_attributes["width"] = string(width)
+    my_rect_attributes["height"] = string(height)
     my_rect = svg_rect(my_rect_attributes)
+
+
 
     mydoc = SvgContent()
 
@@ -188,6 +200,9 @@ end
 
     mydoc.defs = svg_defs(Dict("id"=>"defs"),rad)
     mydoc.main = svg_g(Dict("id"=>"main"), my_rect)
+
+    my_svg_attributes = SVG["svg"]
+    my_svg_attributes["viewBox"] = join_str([x,y,width,height])
 
     println(svg_document(Dict("id"=>"root"),mydoc))
 

@@ -69,7 +69,7 @@ SVG ="svg.json"
 svg_attributes = get_json(SVG)["svg"]
 
 ```
-Note: "get_json" is defined in "test/utils.jl".
+
 
 Let's take a look at the svg element within the file:
 
