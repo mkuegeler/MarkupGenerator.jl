@@ -13,6 +13,19 @@ The intent is to make it easier to create complex documents with parameters, lik
 
 "MarkupGenerator.jl" is written in the [Julia programming language](https://julialang.org).
 
+## Installation
+Currently, this package is not a registered package. To add it as an unregistered package, got to the Pkg REPL and specify the URL:
+```julia
+(v.1.5) pkg> add https://github.com/mkuegeler/MarkupGenerator.jl
+```
+We now can invoke the package in custom scripts.
+```julia
+using MarkupGenerator
+```
+using MarkupGenerator
+
+## Getting Started
+
 The package is language-agnostic, meaning that elements and attributes of any markup language can be generated as long as they base on named elements and assigned attributes.
 
 For instance, to create a **"svg"** element, all you need to do is typing:
@@ -52,7 +65,7 @@ Here is the output:
 <svg id="root"><rect id="my rectangle"></rect></svg>
 ```
 
-## Using element libraries
+## Introducing Element Libraries
 
 The core of the package serves as an abstraction layer for language-specific representations like HTML,XML or SVG. Element libraries and their attributes with sample values in JSON format facilitate the generation of element compositions.
 Basically, these libraries are invocable as JSON files or on a more generic level via API calls requiring a definition of a dedicated API respectively.
@@ -83,7 +96,7 @@ Let's take a look at the svg element within the file:
     "viewBox": "0 0 1282 721",
     "height": "100%",
     "width": "100%"
-  },
+  }
 }
 ```
 
@@ -100,3 +113,71 @@ What you get is a SVG document with attributes and values from the JSON file.
 ```xml
 <svg viewBox="0 0 1282 721" height="100%" style="background-color:#cccccc;" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="100%"/>
 ```
+
+## Recipes
+Recipes make it more easier to create sophisticated documents with predefined parameters.
+
+### Example: svg_doc_recipe
+Let's start with a SVG document. It consists of a gradient background and comes with the following default parameters:
+
+```json
+{
+  "svg_doc_recipe":{
+    "description": "A simple svg document with radial gradient background",
+    "x":"0",
+    "y":"0",
+    "width":"1024",
+    "height":"768",
+    "color1":"#ff0000",
+    "color2":"#0000ff",
+    "offset1":"10%",
+    "offset2":"80%"
+  }
+}
+```
+
+To use the parameters for a custom document, just get an instance of the default parameters and overwrite the values respectively.
+
+```julia
+params = RCP["svg_doc_recipe"]
+# Set custom width and height
+params["width"] = "800"
+params["height"] = "600"
+
+document = svg_doc_recipe(params)
+println(document)
+```
+
+We get a valid SVG document:
+
+```xml
+<svg viewBox="0 0 800 600" height="100%" id="root" style="background-color:#cccccc;" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="100%">
+  <style type="text/css"><![CDATA[ rect.aecbzkib{stroke-width:1;stroke:#000000;fill:url(#jkntnojj);}  ]]></style>
+  <defs id="defs">
+    <radialGradient cy="0.5" fx="0.5" spreadMethod="pad" id="jkntnojj" fy="0.5" r="0.75" cx="0.5">
+      <stop offset="10%" stop-opacity="1" stop-color="#ff0000"/>
+      <stop offset="80%" stop-opacity="1" stop-color="#0000ff"/>
+    </radialGradient>
+  </defs>
+  <g id="main">
+    <rect ry="0" height="600" class="aecbzkib" x="0" rx="0" width="800" y="0"/>
+  </g>
+</svg>
+```
+
+We can insert the code in a HTML document or write it to a file.
+
+<div>
+<svg viewBox="0 0 800 600" height="100%" id="root" style="background-color:#cccccc;" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="100%">
+  <style type="text/css"><![CDATA[ rect.aecbzkib{stroke-width:1;stroke:#000000;fill:url(#jkntnojj);}  ]]></style>
+  <defs id="defs">
+    <radialGradient cy="0.5" fx="0.5" spreadMethod="pad" id="jkntnojj" fy="0.5" r="0.75" cx="0.5">
+      <stop offset="10%" stop-opacity="1" stop-color="#ff0000"/>
+      <stop offset="80%" stop-opacity="1" stop-color="#0000ff"/>
+    </radialGradient>
+  </defs>
+  <g id="main">
+    <rect ry="0" height="600" class="aecbzkib" x="0" rx="0" width="800" y="0"/>
+  </g>
+</svg>
+</div>

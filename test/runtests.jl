@@ -216,7 +216,6 @@ end
     println(show_dict(params))
     params["width"] = "800"
     params["height"] = "600"
+
     println(svg_doc_recipe(params))
-
-
 end
