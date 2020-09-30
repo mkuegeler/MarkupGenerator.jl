@@ -1,0 +1,12 @@
+<svg viewBox="0 0 800 600" height="100%" id="root" style="background-color:#cccccc;" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="100%">
+  <style type="text/css"><![CDATA[ rect.aecbzkib{stroke-width:1;stroke:#000000;fill:url(#jkntnojj);}  ]]></style>
+  <defs id="defs">
+    <radialGradient cy="0.5" fx="0.5" spreadMethod="pad" id="jkntnojj" fy="0.5" r="0.75" cx="0.5">
+      <stop offset="10%" stop-opacity="1" stop-color="#ff0000"/>
+      <stop offset="80%" stop-opacity="1" stop-color="#0000ff"/>
+    </radialGradient>
+  </defs>
+  <g id="main">
+    <rect ry="0" height="600" class="aecbzkib" x="0" rx="0" width="800" y="0"/>
+  </g>
+</svg>
