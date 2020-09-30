@@ -208,3 +208,15 @@ end
 
 
 end
+
+# 13. Test doc recipe
+@testset "Test doc recipe" begin
+
+    params = RCP["svg_doc_recipe"]
+    println(show_dict(params))
+    params["width"] = "800"
+    params["height"] = "600"
+    println(svg_doc_recipe(params))
+
+
+end

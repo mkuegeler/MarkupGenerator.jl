@@ -4,7 +4,7 @@
 ================================================================================
 """
 
-export read_file, get_json, PKG_ROOT_DIR, check_attributes, generate, join_str, set_random_id
+export read_file, get_json, PKG_ROOT_DIR, check_attributes, generate, join_str, set_random_id, show_dict
 
 # read string from file
 function read_file(name::String)
@@ -59,4 +59,15 @@ end
  # Alphanumeric characters only because href values with numbers as the first character do not work in svg documents
  function set_random_id(l::Int64=8)
    Random.randstring('a':'z', l)
+ end
+
+ # Show key and values of a dictionary as a string list
+ function show_dict(d::Dict)
+   content = string()
+   for (key,value) in sort(collect(d))
+         content = (string(content, "- ", key," : ",value, "\n"))
+     end
+     return """
+            $content
+            """
  end
