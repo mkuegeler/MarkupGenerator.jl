@@ -7,6 +7,6 @@ const PKG_ROOT_DIR = normpath(joinpath(@__DIR__, ".."))
 
 include("./Utils.jl")
 include("./Markup.jl")
-include("./svg.jl")
+include("./SVG.jl")
 
 end # end of module
