@@ -62,11 +62,11 @@ The following example shows the **svg** element of an SVG application and its at
 
 The JSON file **"svg.json"** in directory "test" contains common SVG elements. By following the scheme of the file, any other markup language can be invoked in a similar manner.
 
-Load the JSON file from the test directory:
+Load the JSON file from the assets directory:
 
 ```julia
-SVG ="svg.json"
-svg_attributes = get_json(SVG)["svg"]
+
+svg_attributes = SVG["svg"]
 
 ```
 
@@ -90,8 +90,7 @@ Let's take a look at the svg element within the file:
 You can use the predefined values of the element for your custom document. "get_json" transforms the JSON element into a Julia dictionary.
 
 ```julia
-SVG ="svg.json"
-svg_attributes = get_json(SVG)["svg"]
+svg_attributes = SVG["svg"]
 el = element("svg",svg_attributes)
 println(el)
 ```
