@@ -4,7 +4,7 @@
 ================================================================================
 """
 
-export read_file, get_json, PKG_ROOT_DIR, check_attributes, generate, join_str, set_random_id, show_dict
+export read_file, get_json, PKG_ROOT_DIR, check_attributes, generate, join_str, set_random_id, show_dict, funcName, get_attributes
 
 # read string from file
 function read_file(name::String)
@@ -70,4 +70,26 @@ end
      return """
             $content
             """
+ end
+
+ # Return function name of the current function
+ # Reference: https://discourse.julialang.org/t/how-to-print-function-name-and-source-file-line-number/43486
+ macro funcName()
+    quote
+         st = stacktrace(backtrace())
+         myf = ""
+         for frm in st
+             funcname = frm.func
+             if frm.func != :backtrace && frm.func!= Symbol("macro expansion")
+                 myf = frm.func
+                 break
+             end
+         end
+         string(myf)
+     end
+ end
+
+ # Return a copy of a dict value
+ function get_attributes(d::Dict, value::String)
+   return(copy(d[value]))
  end

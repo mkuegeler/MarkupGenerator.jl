@@ -1,13 +1,34 @@
 {
-  "svg_doc_recipe":{
+  "svg_doc_recipe": {
     "description": "A simple svg document with radial gradient background",
-    "x":"0",
-    "y":"0",
-    "width":"1024",
-    "height":"768",
-    "color1":"#ff0000",
-    "color2":"#0000ff",
-    "offset1":"10%",
-    "offset2":"80%"
+    "x": "0",
+    "y": "0",
+    "w": "1024",
+    "h": "768",
+    "color1": "#ff0000",
+    "color2": "#0000ff",
+    "offset1": "10%",
+    "offset2": "80%"
+  },
+  "svg_canvas_recipe": {
+    "description": "A svg rectangle with predefined nested elements",
+    "x": "0",
+    "y": "0",
+    "w": "1024",
+    "h": "768",
+    "start": "0",
+    "factor": "1",
+    "r0": "r0",
+    "tl": "tl",
+    "mt": "mt",
+    "tr": "tr",
+    "mr": "mr",
+    "br": "br",
+    "mb": "mb",
+    "bl": "bl",
+    "ml": "ml",
+    "cp": "cp",
+    "lv": "lv",
+    "lh": "lh"
   }
 }

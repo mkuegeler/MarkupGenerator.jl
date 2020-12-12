@@ -73,18 +73,18 @@ Basically, these libraries are invocable as JSON files or on a more generic leve
 The following example shows the **svg** element of an SVG application and its attributes.
 [SVG](https://www.w3.org/TR/SVG11/intro.html) stands for Scalable Vector Graphics and is an application of XML to create highly detailed, resolution-independent, two-dimensional images in a truly portable format.
 
-The JSON file **"svg.json"** in directory "test" contains common SVG elements. By following the scheme of the file, any other markup language can be invoked in a similar manner.
+The JSON file **"svg.json"** in the assets directory contains common SVG elements. By following the scheme of the file, any other markup language can be invoked in a similar manner.
 
 Load the JSON file from the assets directory:
 
 ```julia
 
-svg_attributes = SVG["svg"]
+svg_attributes = get_attributes(SVG,"svg")
 
 ```
 
 
-Let's take a look at the svg element within the file:
+Let's take a look at the svg element within **"svg.json"** :
 
 ```json
 {
@@ -100,10 +100,10 @@ Let's take a look at the svg element within the file:
 }
 ```
 
-You can use the predefined values of the element for your custom document. "get_json" transforms the JSON element into a Julia dictionary.
+You can use the predefined values of the element for your custom document.
 
 ```julia
-svg_attributes = SVG["svg"]
+svg_attributes = get_attributes(SVG,"svg")
 el = element("svg",svg_attributes)
 println(el)
 ```
@@ -136,13 +136,13 @@ Let's start with a SVG document. It consists of a gradient background and comes 
 }
 ```
 
-To use the parameters for a custom document, just get an instance of the default parameters and overwrite the values respectively.
+To use the parameters for a custom document, create an instance of the default parameters and overwrite the values respectively.
 
 ```julia
-params = RCP["svg_doc_recipe"]
+params = get_attributes(RCP,"svg_doc_recipe")
 # Set custom width and height
-params["width"] = "800"
-params["height"] = "600"
+params["w"] = "800"
+params["h"] = "600"
 
 document = svg_doc_recipe(params)
 println(document)
