@@ -4,7 +4,7 @@
 ================================================================================
 """
 
-export read_file, get_json, PKG_ROOT_DIR, check_attributes, generate, join_str, set_random_id, show_dict, funcName, get_attributes
+export read_file, get_json, PKG_ROOT_DIR, check_attributes, generate, join_str, set_random_id, show_dict, funcName, getFunc, get_attributes
 
 # read string from file
 function read_file(name::String)
@@ -87,6 +87,16 @@ end
          end
          string(myf)
      end
+ end
+
+ # turn string into functions
+ function getFunc(name)
+     fn = Symbol(name)
+     eval(
+        quote
+            return $fn()
+        end
+     )
  end
 
  # Return a copy of a dict value
