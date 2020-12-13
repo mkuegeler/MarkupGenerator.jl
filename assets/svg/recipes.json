@@ -29,6 +29,10 @@
     "ml": "ml",
     "cp": "cp",
     "lv": "lv",
-    "lh": "lh"
+    "lh": "lh",
+    "color1": "#ff0000",
+    "color2": "#0000ff",
+    "offset1": "10%",
+    "offset2": "80%"
   }
 }

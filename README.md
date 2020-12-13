@@ -22,7 +22,6 @@ We now can invoke the package in custom scripts.
 ```julia
 using MarkupGenerator
 ```
-using MarkupGenerator
 
 ## Getting Started
 

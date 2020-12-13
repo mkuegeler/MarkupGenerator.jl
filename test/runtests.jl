@@ -210,21 +210,21 @@ const ASSETS_DIR = joinpath(dirname(@__FILE__), "..", "assets")
 # end
 
 # 13. Test doc recipe
-@testset "Test doc recipe" begin
-
-    params = get_attributes(RCP,"svg_doc_recipe")
-    
-    params["w"] = "800"
-    params["h"] = "600"
-
-    println(svg_doc_recipe(params))
-    # println(svg_doc_recipe())
-
-end
+# @testset "Test doc recipe" begin
+#
+#     params = get_attributes(RCP,"svg_doc_recipe")
+#
+#     params["w"] = "800"
+#     params["h"] = "600"
+#
+#     println(svg_doc_recipe(params))
+#     # println(svg_doc_recipe())
+#
+# end
 
 
 # 14. Test canvas recipe
-# @testset "Test canvas recipe" begin
-#
-#     println(svg_canvas_recipe())
-# end
+@testset "Test canvas recipe" begin
+
+    println(svg_canvas_recipe())
+end

@@ -91,7 +91,7 @@ end
 
 
 # Recipes
-function svg_doc_recipe(p::Dict=get_attributes(RCP,@funcName))
+function svg_doc_recipe(p::Dict=get_attributes(RCP,@funcName),content::String=string())
 
     # Id's
     radialGradient_id = set_random_id()
@@ -132,7 +132,8 @@ function svg_doc_recipe(p::Dict=get_attributes(RCP,@funcName))
     doc.style = svg_style(Dict(),svg_css([rect_style_class]))
     doc.defs = svg_defs(Dict("id"=>"defs"),radialGradient_template(radialGradient,grad_content))
     # Insert your content here (i.e. svg_canvas_recipe)
-    doc.main = svg_g(Dict("id"=>"main"),svg_rect(rect))
+    # doc.main = svg_g(Dict("id"=>"main"),svg_rect(rect))
+    doc.main = svg_g(Dict("id"=>"main"),content)
 
     svg =  get_attributes(SVG,"svg")
     svg["viewBox"] = join_str([p["x"],p["y"],p["w"],p["h"]])
@@ -187,9 +188,11 @@ function svg_canvas_recipe(p::Dict=get_attributes(RCP,@funcName))
  ga = get_attributes(SVG,"g")
  ga["type"] = @funcName
 
- return svg_g(ga,el)
+ # Get svg document
+ doc = get_attributes(RCP,"svg_doc_recipe")
+ doc["w"] = p["w"]
+ doc["h"] = p["h"]
 
-
-
+ return svg_doc_recipe(doc,svg_g(ga,el))
 
 end
