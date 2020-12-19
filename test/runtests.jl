@@ -227,5 +227,7 @@ end
 
     params["w"] = "800"
     params["h"] = "800"
+    params["factor"] = "8"
+    params["class"] = "no"
     println(svg_canvas_recipe(params))
 end
