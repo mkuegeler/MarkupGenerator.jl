@@ -30,7 +30,7 @@ A generic SVG document:
 # Example: svg filter element
 PREF = "svg_"
 
-generate(SVG,PREF)
+generate(copy(SVG),PREF)
 
 # function wrapper for template functions
 
@@ -88,9 +88,18 @@ function linearGradient_template(a::Dict=SVG["linearGradient"],c::GradientConten
     return wrap(string(PREF,"linearGradient"),a,string(c.stop1,c.stop2))
 end
 
+"""
+
+================================================================================
+# SVG Recipes
+================================================================================
+
+Recipes are parametric document templates with a corresponding json file
 
 
-# Recipes
+"""
+
+# A simple svg document. Just a rectangle with a radial gradient background
 function svg_doc_recipe(p::Dict=get_attributes(RCP,@funcName))
 
     # Id's
@@ -131,10 +140,8 @@ function svg_doc_recipe(p::Dict=get_attributes(RCP,@funcName))
 
     doc.style = svg_style(Dict(),svg_css([rect_style_class]))
     doc.defs = svg_defs(Dict("id"=>"defs"),radialGradient_template(radialGradient,grad_content))
-    # Insert your content here (i.e. svg_canvas_recipe)
-    # doc.main = svg_g(Dict("id"=>"main"),svg_rect(rect))
-    content = haskey(p,"children") ? getFunc(p["children"]) : svg_rect(rect)
 
+    content = svg_rect(rect)
     doc.main = svg_g(Dict("id"=>"main"),content)
 
     svg =  get_attributes(SVG,"svg")
@@ -144,52 +151,95 @@ function svg_doc_recipe(p::Dict=get_attributes(RCP,@funcName))
 
 end
 
+# See abstract_rectangle in Abstract.jl
 function svg_canvas_recipe(p::Dict=get_attributes(RCP,@funcName))
-    el = string()
-    ae = abstract_rectangle(p)
-    r = string((parse(Float64,ae.r)/parse(Float64,p["factor"])))
 
-    # Create the rectangle
+   # Build Gradients
+   rect_radialGradient_id = set_random_id()
+   rect_style_id = set_random_id()
 
-    ra = get_attributes(SVG,"rect")
-    ra["x"] = ae.points["tl"].x
-    ra["y"] = ae.points["tl"].y
-    ra["width"] = ae.w
-    ra["height"] = ae.h
-    el = string(el, svg_rect(ra))
+   # Gradients
+   rect_radialGradient = get_attributes(SVG,"radialGradient")
+   rect_radialGradient["id"] = rect_radialGradient_id
 
+   rect_grad_content = GradientContent()
+   rect_grad_content.stop1 = svg_stop(Dict(
+     "stop-color"=>p["color1"],
+     "offset"=>p["offset1"]
+   ))
+   rect_grad_content.stop2 = svg_stop(Dict(
+     "stop-color"=>p["color2"],
+     "offset"=>p["offset2"]
+   ))
 
-    # Create the circles
-     for (k,v) in ae.points
-        ar = get_attributes(SVG,"circle")
-        ar["cx"] = v.x
-        ar["cy"] = v.y
-        ar["r"] = r
-        if p[k] != k ar["class"] = p[k] end
-        el = string(el, svg_circle(ar))
-     end
+   defs = radialGradient_template(rect_radialGradient,rect_grad_content)
 
-     # create cross lines
-  lv = get_attributes(SVG,"line")
-  lh = get_attributes(SVG,"line")
+   # Build CSS
+   rect_style = get_attributes(CSS,"rect")
+   rect_style["fill"] = set_href(rect_radialGradient_id)
+   rect_style_class = svg_class("rect",rect_style,rect_style_id)
 
-  lv["x1"] = ae.points["mt"].x
-  lv["y1"] = ae.points["mt"].y
-  lv["x2"] = ae.points["mb"].x
-  lv["y2"] = ae.points["mb"].y
-  if p["lv"] != "lv" lv["class"] = p["lv"] end
+   # Build Elements
+   el = string()
+   ae = abstract_rectangle(p)
+   r = string((parse(Float64,ae.r)/parse(Float64,p["factor"])))
 
-  lh["x1"] = ae.points["mr"].x
-  lh["y1"] = ae.points["mr"].y
-  lh["x2"] = ae.points["ml"].x
-  lh["y2"] = ae.points["ml"].y
-  if p["lh"] != "lh" lh["class"] = p["lh"] end
+   # Create the rectangle
 
-  el = string(el,svg_line(lv),svg_line(lh))
+   ra = get_attributes(SVG,"rect")
+   delete!(ra, "style")
+   ra["class"] = rect_style_id
+   ra["x"] = ae.points["tl"].x
+   ra["y"] = ae.points["tl"].y
+   ra["width"] = ae.w
+   ra["height"] = ae.h
+   el = string(el, svg_rect(ra))
 
- ga = get_attributes(SVG,"g")
- ga["type"] = @funcName
+   # Create the circles
+   for (k,v) in ae.points
+         ar = get_attributes(SVG,"circle")
+         ar["cx"] = v.x
+         ar["cy"] = v.y
+         ar["r"] = r
+         # if p[k] != k ar["class"] = p[k] end
+         el = string(el, svg_circle(ar))
+   end
 
- return svg_g(ga,el)
+      # create cross lines
+   lv = get_attributes(SVG,"line")
+   lh = get_attributes(SVG,"line")
+
+   lv["x1"] = ae.points["mt"].x
+   lv["y1"] = ae.points["mt"].y
+   lv["x2"] = ae.points["mb"].x
+   lv["y2"] = ae.points["mb"].y
+   # if p["lv"] != "lv" lv["class"] = p["lv"] end
+
+   lh["x1"] = ae.points["mr"].x
+   lh["y1"] = ae.points["mr"].y
+   lh["x2"] = ae.points["ml"].x
+   lh["y2"] = ae.points["ml"].y
+   # if p["lh"] != "lh" lh["class"] = p["lh"] end
+
+   el = string(el,svg_line(lv),svg_line(lh))
+
+   ga = get_attributes(SVG,"g")
+   ga["type"] = @funcName
+
+   content = svg_g(ga,el)
+
+   # Assemble the document
+
+   doc = SvgContent()
+
+   doc.style = svg_style(Dict(),svg_css([rect_style_class]))
+   doc.defs = svg_defs(Dict("id"=>"defs"),defs)
+
+   doc.main = svg_g(Dict("id"=>"main"),content)
+
+   svg =  get_attributes(SVG,"svg")
+   svg["viewBox"] = join_str([p["x"],p["y"],p["w"],p["h"]])
+
+   return svg_document(svg,doc)
 
 end

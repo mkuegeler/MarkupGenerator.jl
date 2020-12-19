@@ -41,7 +41,7 @@ end
        eval(
          quote
               $fn = function (attributes::Dict=$default,children::String=string())
-                     attributes = check_attributes(attributes,$default)
+                     # attributes = check_attributes(attributes,$default)
                      return !isempty(children) ? element($e,attributes,children) : element($e,attributes)
                    end
               export $fn

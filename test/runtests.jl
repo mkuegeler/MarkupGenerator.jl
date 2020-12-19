@@ -215,18 +215,17 @@ const ASSETS_DIR = joinpath(dirname(@__FILE__), "..", "assets")
     params = get_attributes(RCP,"svg_doc_recipe")
 
     params["w"] = "800"
-    params["h"] = "600"
-    params["children"] = "svg_canvas_recipe"
-
-    println(svg_doc_recipe(params)) 
-    # println(svg_doc_recipe())
-    # get_attributes(RCP,"svg_doc_recipe"),
+    params["h"] = "800"
+    println(svg_doc_recipe(params))
 
 end
 
 
 # 14. Test canvas recipe
-# @testset "Test canvas recipe" begin
-#
-#     println(svg_canvas_recipe())
-# end
+@testset "Test canvas recipe" begin
+    params = get_attributes(RCP,"svg_canvas_recipe")
+
+    params["w"] = "800"
+    params["h"] = "800"
+    println(svg_canvas_recipe(params))
+end
