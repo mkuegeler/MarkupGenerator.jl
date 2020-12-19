@@ -225,9 +225,13 @@ end
 @testset "Test canvas recipe" begin
     params = get_attributes(RCP,"svg_canvas_recipe")
 
+    # println(params)
+
     params["w"] = "800"
     params["h"] = "800"
     params["factor"] = "8"
-    params["class"] = "no"
+    params["line_class"] = "no"
+    params["circle_class"] = "no"
+    params["rect_class"] = "yes"
     println(svg_canvas_recipe(params))
 end

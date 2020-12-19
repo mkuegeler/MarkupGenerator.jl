@@ -156,52 +156,78 @@ function svg_canvas_recipe(p::Dict=get_attributes(RCP,@funcName))
 
    # Build Gradients
 
-   rect_radialGradient_id = set_random_id()
-   rect_radialGradient = get_attributes(SVG,"radialGradient")
-   rect_radialGradient["id"] = rect_radialGradient_id
+   defs = string()
 
-   rect_grad_content = GradientContent()
-   rect_grad_content.stop1 = svg_stop(Dict(
-     "stop-color"=>p["rect_color1"],
-     "offset"=>p["rect_offset1"]
-   ))
-   rect_grad_content.stop2 = svg_stop(Dict(
-     "stop-color"=>p["rect_color2"],
-     "offset"=>p["rect_offset2"]
-   ))
+   if p["rect_class"] == "yes"
 
-   circle_radialGradient_id = set_random_id()
-   circle_radialGradient = get_attributes(SVG,"radialGradient")
-   circle_radialGradient["id"] = circle_radialGradient_id
+     rect_radialGradient_id = set_random_id()
+     rect_radialGradient = get_attributes(SVG,"radialGradient")
+     rect_radialGradient["id"] = rect_radialGradient_id
 
-   circle_grad_content = GradientContent()
-   circle_grad_content.stop1 = svg_stop(Dict(
-     "stop-color"=>p["circle_color1"],
-     "offset"=>p["circle_offset1"]
-   ))
-   circle_grad_content.stop2 = svg_stop(Dict(
-     "stop-color"=>p["circle_color2"],
-     "offset"=>p["circle_offset2"]
-   ))
+     rect_grad_content = GradientContent()
+     rect_grad_content.stop1 = svg_stop(Dict(
+       "stop-color"=>p["rect_color1"],
+       "offset"=>p["rect_offset1"]
+     ))
+     rect_grad_content.stop2 = svg_stop(Dict(
+       "stop-color"=>p["rect_color2"],
+       "offset"=>p["rect_offset2"]
+     ))
 
+     defs = string(defs,radialGradient_template(rect_radialGradient,rect_grad_content))
+   end
+
+   if p["circle_class"] == "yes"
+      circle_radialGradient_id = set_random_id()
+      circle_radialGradient = get_attributes(SVG,"radialGradient")
+      circle_radialGradient["id"] = circle_radialGradient_id
+
+      circle_grad_content = GradientContent()
+      circle_grad_content.stop1 = svg_stop(Dict(
+        "stop-color"=>p["circle_color1"],
+        "offset"=>p["circle_offset1"]
+      ))
+      circle_grad_content.stop2 = svg_stop(Dict(
+        "stop-color"=>p["circle_color2"],
+        "offset"=>p["circle_offset2"]
+      ))
+
+      defs = string(defs,radialGradient_template(circle_radialGradient,circle_grad_content))
+   end
    # Add all gradients to dev element
-   defs = string(
-      radialGradient_template(rect_radialGradient,rect_grad_content),
-      radialGradient_template(circle_radialGradient,circle_grad_content)
-      )
+   # defs = string(
+   #    radialGradient_template(rect_radialGradient,rect_grad_content),
+   #    radialGradient_template(circle_radialGradient,circle_grad_content)
+   #    )
 
    # Build CSS Classes
-   rect_style_id = set_random_id()
-   rect_style = get_attributes(CSS,"rect")
-   rect_style["fill"] = set_href(rect_radialGradient_id)
-   rect_style_class = svg_class("rect",rect_style,rect_style_id)
 
-   circle_style_id = set_random_id()
-   circle_style = get_attributes(CSS,"rect")
-   circle_style["fill"] = set_href(circle_radialGradient_id)
-   circle_style_class = svg_class("circle",circle_style,circle_style_id)
+   class_list = Array{String,1}()
 
-   classes = svg_css([rect_style_class,circle_style_class])
+   if p["rect_class"] == "yes"
+      rect_style_id = set_random_id()
+      rect_style = get_attributes(CSS,"rect")
+      rect_style["fill"] = set_href(rect_radialGradient_id)
+      rect_style["stroke-width"] = p["rect_stroke-width"]
+      rect_style["stroke"] = p["rect_stroke"]
+      push!(class_list,svg_class("rect",rect_style,rect_style_id))
+   end
+   if p["circle_class"] == "yes"
+      circle_style_id = set_random_id()
+      circle_style = get_attributes(CSS,"rect")
+      circle_style["fill"] = set_href(circle_radialGradient_id)
+      circle_style["stroke-width"] = p["circle_stroke-width"]
+      circle_style["stroke"] = p["circle_stroke"]
+      push!(class_list,svg_class("circle",circle_style,circle_style_id))
+   end
+
+   if p["line_class"] == "yes"
+      line_style_id = set_random_id()
+      line_style = get_attributes(CSS,"line")
+      line_style["stroke-width"] = p["line_stroke-width"]
+      line_style["stroke"] = p["line_stroke"]
+      push!(class_list,svg_class("line",line_style,line_style_id))
+   end
 
    # Build Elements
    el = string()
@@ -211,7 +237,7 @@ function svg_canvas_recipe(p::Dict=get_attributes(RCP,@funcName))
    # Create the rectangle
 
    ra = get_attributes(SVG,"rect")
-   if p["class"] == "yes"
+   if p["rect_class"] == "yes"
      delete!(ra, "style")
      ra["class"] = rect_style_id
    end
@@ -224,14 +250,13 @@ function svg_canvas_recipe(p::Dict=get_attributes(RCP,@funcName))
    # Create the circles
    for (k,v) in ae.points
          ar = get_attributes(SVG,"circle")
-         if p["class"] == "yes"
+         if p["circle_class"] == "yes"
            delete!(ar, "style")
            ar["class"] = circle_style_id
          end
          ar["cx"] = v.x
          ar["cy"] = v.y
          ar["r"] = r
-         # if p[k] != k ar["class"] = p[k] end
          el = string(el, svg_circle(ar))
    end
 
@@ -243,13 +268,18 @@ function svg_canvas_recipe(p::Dict=get_attributes(RCP,@funcName))
    lv["y1"] = ae.points["mt"].y
    lv["x2"] = ae.points["mb"].x
    lv["y2"] = ae.points["mb"].y
-   # if p["lv"] != "lv" lv["class"] = p["lv"] end
 
    lh["x1"] = ae.points["mr"].x
    lh["y1"] = ae.points["mr"].y
    lh["x2"] = ae.points["ml"].x
    lh["y2"] = ae.points["ml"].y
-   # if p["lh"] != "lh" lh["class"] = p["lh"] end
+
+   if p["line_class"] == "yes"
+     delete!(lv, "style")
+     lv["class"] = line_style_id
+     delete!(lh, "style")
+     lh["class"] = line_style_id
+   end
 
    el = string(el,svg_line(lv),svg_line(lh))
 
@@ -262,8 +292,11 @@ function svg_canvas_recipe(p::Dict=get_attributes(RCP,@funcName))
 
    doc = SvgContent()
 
-   doc.style = svg_style(Dict(),classes)
-   doc.defs = svg_defs(Dict("id"=>"defs"),defs)
+   if !isempty(class_list) doc.style = svg_style(Dict(),svg_css(class_list)) end
+   if length(defs) > 0 doc.defs = svg_defs(Dict("id"=>"defs"),defs) end
+
+   # doc.style = svg_style(Dict(),svg_css(class_list))
+   # doc.defs = svg_defs(Dict("id"=>"defs"),defs)
 
    doc.main = svg_g(Dict("id"=>"main"),content)
 
